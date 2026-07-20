@@ -1,0 +1,33 @@
+{
+  "purpose": "API demonstration; not a reproduction of the full benchmark",
+  "seed": 17,
+  "epochs": 30,
+  "batch_size": 128,
+  "n_cells": 500,
+  "n_genes": 300,
+  "n_tfs": 40,
+  "n_targets": 200,
+  "n_prior_grn_edges": 500,
+  "n_data_soft_candidates": 260,
+  "n_allowed_grn_edges": 760,
+  "global_grn_shape": [
+    40,
+    200
+  ],
+  "dynamic_grn_shape": [
+    500,
+    40,
+    200
+  ],
+  "training_seconds": 4.142317502060905,
+  "device": "cuda:0",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "python": "3.10.20",
+  "torch": "2.4.1+cu121",
+  "scvi_tools": "1.2.0",
+  "anndata": "0.11.4",
+  "interfaces": [
+    "SPARC.get_global_grn",
+    "SPARC.get_dynamic_grn"
+  ]
+}

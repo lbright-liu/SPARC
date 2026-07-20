@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sparc-grn"
+version = "0.4.0"
+description = "Pathway-constrained spatial GRN inference with cell-specific dynamic networks"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+authors = [
+  {name = "Liliang Liu"},
+]
+dependencies = [
+  "anndata>=0.11.4,<0.12",
+  "numpy>=1.26.4,<2.0",
+  "pandas>=2.3.3,<3.0",
+  "scikit-learn>=1.7.2,<2.0",
+  "scipy>=1.15.3,<2.0",
+  "scvi-tools==1.2.0",
+  "torch>=2.4.1,<2.5",
+]
+
+[project.urls]
+Repository = "https://github.com/lbright-liu/SPARC"
+
+[tool.setuptools.packages.find]
+where = ["src"]

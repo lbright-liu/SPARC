@@ -1,0 +1,22 @@
+{
+  "source_dataset": "scMultiSim-v5 high-noise-prior benchmark",
+  "source_directory_name": "data_official_sparc_balanced_n3000_g300",
+  "sampling_seed": 17,
+  "cells_per_domain": 100,
+  "n_cells": 500,
+  "n_genes": 300,
+  "domains": {
+    "Domain_0": 100,
+    "Domain_1": 100,
+    "Domain_2": 100,
+    "Domain_3": 100,
+    "Domain_4": 100
+  },
+  "n_ligands": 30,
+  "n_receptors": 30,
+  "n_tfs": 40,
+  "n_targets": 200,
+  "n_grn_prior_edges": 500,
+  "n_true_grn_edges": 200,
+  "n_true_dynamic_edges": 70
+}
