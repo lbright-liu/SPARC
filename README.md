@@ -15,8 +15,8 @@ scMultiSim example focused on two inference interfaces:
 - global TF-target GRN inference;
 - cell-specific dynamic GRN inference.
 
-The perturbation and transplantation analyses described in the paper are not
-part of this minimal interface demonstration.
+![Uploading image.png…]()
+
 
 ## Installation
 
