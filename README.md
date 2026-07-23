@@ -152,14 +152,11 @@ python demo/run_demo.py \
 | Item | Verified value |
 | --- | --- |
 | Hardware | NVIDIA GeForce RTX 3090 |
-| Training time | 4.14 s |
+| Training time | ~10s |
 | Data-soft candidate edges | 260 |
 | Total modeled TF-target edges | 760 |
 | Global GRN shape | 40 x 200 |
 | Dynamic GRN shape | 500 x 40 x 200 |
-
-Runtime is hardware dependent and is provided only as a smoke-test reference,
-not as a scalability benchmark.
 
 ## Input Conventions
 
@@ -171,6 +168,8 @@ For a new dataset, SPARC expects:
 - a target-by-TF GRN support mask;
 - a gene-by-gene ligand-to-receptor mask;
 - a gene-by-TF receptor-to-TF mask.
+
+The prior knowledge masks for the ligand-receptor-TF-target cascade can be derived from an integrated, large-scale multi-layer signaling network resource (Nature Computational Science, 2026; GitHub repository: https://github.com/SunXQlab/CCCvelo).
 
 Expression and spatial data are registered before model construction:
 
