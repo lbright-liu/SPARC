@@ -1,7 +1,7 @@
 # Demo data
 
 The files in this directory form a compact, domain-balanced subset of the
-scMultiSim-v5 high-noise-prior benchmark used in the SPARC paper.
+scMultiSim high-noise-prior benchmark used in the SPARC paper.
 
 - `scmultisim_demo.h5ad` contains 500 cells (100 from each of five spatial
   domains) and the complete 300-gene panel.
