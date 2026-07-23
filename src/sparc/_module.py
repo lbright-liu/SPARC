@@ -5,10 +5,6 @@ Current forward graph:
   spatial niche -> ligand-receptor signal -> receptor-to-TF modulation
   dynamic GRN + modulated TF activity -> target reconstruction.
 
-The v4 module intentionally removes the independent niche latent, the
-niche-specific GRN decoder, and the free TF gate used in v3. Environmental
-information can affect target reconstruction only through the prior-constrained
-LR -> RTF -> TF activity cascade.
 """
 
 import numpy as np
