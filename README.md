@@ -62,7 +62,7 @@ SPARC/
 
 ## Demo Dataset
 
-The included demo is a fixed, domain-balanced subset of the scMultiSim-v5
+The included demo is a fixed, domain-balanced subset of the scMultiSim
 high-noise-prior benchmark used in the SPARC paper.
 
 | Property | Demo setting |
@@ -78,9 +78,7 @@ high-noise-prior benchmark used in the SPARC paper.
 
 Expression values are library-size normalized and `log1p` transformed. The
 subset uses sampling seed 17 and retains the complete gene panel and all prior
-masks. It is intended for API validation, not for reproducing the paper's
-quantitative benchmark, which uses 3,000 cells, 150 epochs, and three model
-seeds.
+masks.
 
 ## Quick Start
 
