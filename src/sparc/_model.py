@@ -1,15 +1,3 @@
-"""High-level SPARC model class for training and inference.
-
-Built on top of scvi-tools BaseModelClass.
-v4 changes:
-  - Single-latent pathway-constrained spatial GRN architecture.
-  - Spatial niche information enters only through LR -> RTF -> TF activity.
-  - L-R-TF-TG cascade priors constrain LR, RecTF, and TF-TG paths.
-  - Perturbation rollout is aligned with the training forward graph.
-  - Virtual microenvironment transplantation keeps receiver cells fixed while
-    replacing only their prior-constrained niche input.
-"""
-
 import logging
 from typing import Optional
 
