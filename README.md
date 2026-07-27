@@ -15,7 +15,8 @@ scMultiSim example focused on two inference interfaces:
 - global TF-target GRN inference;
 - cell-specific dynamic GRN inference.
 
-<img width="2231" height="1220" alt="704e51b7-52f1-4190-983b-30d185807e36" src="https://github.com/user-attachments/assets/4303a5a5-df23-4545-bf66-296427bdeb72" />
+<img width="2234" height="1233" alt="ee2e80ff-56de-48f0-a82e-1db24004a1c4" src="https://github.com/user-attachments/assets/45585cda-f6d5-4fa9-ab66-9873d03497a8" />
+
 
 
 
