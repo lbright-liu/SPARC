@@ -169,7 +169,7 @@ For a new dataset, SPARC expects:
 - a gene-by-gene ligand-to-receptor mask;
 - a gene-by-TF receptor-to-TF mask.
 
-The prior knowledge masks for the ligand-receptor-TF-target cascade can be derived from an integrated, large-scale multi-layer signaling network resource (Nature Computational Science, 2026; GitHub repository: https://github.com/SunXQlab/CCCvelo).
+The prior knowledge masks for the ligand-receptor-TF-target cascade can be derived from an integrated, large-scale multi-layer signaling network resource (**Nature Computational Science, 2026**; GitHub repository: https://github.com/SunXQlab/CCCvelo).
 
 Expression and spatial data are registered before model construction:
 
