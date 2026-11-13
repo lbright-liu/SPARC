@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sparc-grn"
-version = "0.4.0"
-description = "Pathway-constrained spatial GRN inference with cell-specific dynamic networks"
+version = "0.5.0"
+description = "Pathway-constrained spatial GRN inference and counterfactual modeling"
 readme = "README.md"
 requires-python = ">=3.10,<3.11"
 authors = [

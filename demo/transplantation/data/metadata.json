@@ -1,0 +1,14 @@
+{
+  "n_training_cells": 30372,
+  "n_genes": 425,
+  "n_donor_cells": 40,
+  "n_recipient_environment_cells": 512,
+  "n_heldout_truth_cells": 66,
+  "n_target_local_niche_profiles": 66,
+  "target_niche_neighbors": 64,
+  "n_lr_edges": 48,
+  "n_receptor_tf_edges": 2275,
+  "n_strict_grn_edges": 635,
+  "n_data_soft_edges": 68,
+  "n_allowed_grn_edges": 703
+}

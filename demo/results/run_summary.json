@@ -19,7 +19,7 @@
     40,
     200
   ],
-  "training_seconds": 4.142317502060905,
+  "training_seconds": 3.9892469740007073,
   "device": "cuda:0",
   "gpu": "NVIDIA GeForce RTX 3090",
   "python": "3.10.20",

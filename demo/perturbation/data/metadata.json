@@ -1,0 +1,14 @@
+{
+  "n_cells": 1673,
+  "n_genes": 3000,
+  "n_control_spots": 208,
+  "n_lr_edges": 442,
+  "n_receptor_tf_edges": 24649,
+  "n_strict_grn_edges": 16561,
+  "n_data_soft_edges": 245,
+  "n_allowed_grn_edges": 16806,
+  "perturbation_genes": [
+    "Tgfbr2",
+    "Jak2"
+  ]
+}

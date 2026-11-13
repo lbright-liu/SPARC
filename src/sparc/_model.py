@@ -795,6 +795,7 @@ class SPARC(UnsupervisedTrainingMixin, BaseModelClass):
         tol: float = 1e-4,
         damping: float = 0.5,
         return_trajectory: bool = False,
+        return_dataframe: bool = False,
         batch_size: int = 2048,
     ):
         """In-silico perturbation via fixed-point rollout on the trained graph.
@@ -805,6 +806,12 @@ class SPARC(UnsupervisedTrainingMixin, BaseModelClass):
             Optional boolean mask selecting cells where the intervention is
             applied. When omitted, the perturbation is global, matching the
             historical behavior.
+        n_steps, damping
+            Fixed-point rollout depth and EMA update rate. The Perturb-map
+            experiment used 30 steps and damping 0.25.
+        return_dataframe
+            Return the final cell-by-target delta as a labeled DataFrame.
+            This option is ignored when ``return_trajectory=True``.
         """
         self._check_if_trained()
         adata = self._validate_anndata(adata)
@@ -927,7 +934,11 @@ class SPARC(UnsupervisedTrainingMixin, BaseModelClass):
 
         if return_trajectory:
             return trajectory
-        return delta.cpu().numpy()
+        delta_np = delta.cpu().numpy()
+        if return_dataframe:
+            target_genes = np.asarray(adata.var_names)[self.module.target_index]
+            return pd.DataFrame(delta_np, index=adata.obs_names, columns=target_genes)
+        return delta_np
 
     @torch.no_grad()
     def explain_perturbation_response(
@@ -1376,6 +1387,7 @@ class SPARC(UnsupervisedTrainingMixin, BaseModelClass):
         donor_mask: Optional[np.ndarray] = None,
         environment_mask: Optional[np.ndarray] = None,
         x_niche: Optional[np.ndarray] = None,
+        cartesian_niche: bool = False,
         batch_size: int = 2048,
         return_dataframe: bool = False,
     ) -> dict:
@@ -1384,8 +1396,15 @@ class SPARC(UnsupervisedTrainingMixin, BaseModelClass):
         The donor cell's local expression and intrinsic latent state are kept
         fixed. Only the spatial niche input is replaced, either by a supplied
         ``x_niche`` matrix or by the mean log-expression profile of cells
-        selected by ``environment_mask``. In v4, the replacement niche can
+        selected by ``environment_mask``. The replacement niche can
         influence predictions only through the LR -> RTF -> TF activity cascade.
+
+        With ``environment_mask``, this implements the ``mean_env_frozen_z``
+        design. With an explicit matrix of local profiles in ``x_niche`` and
+        ``cartesian_niche=True``, every donor is paired with every profile,
+        implementing the hColon ``target_local_env_frozen_z`` design. The
+        returned arrays contain target-gene expression and ``delta`` is
+        ``transplanted - baseline``.
         """
         self._check_if_trained()
         adata = self._validate_anndata(adata)
@@ -1419,16 +1438,35 @@ class SPARC(UnsupervisedTrainingMixin, BaseModelClass):
         donor_idx = np.flatnonzero(donor_mask_np)
         x_donor = x_raw[donor_idx].astype(np.float32, copy=False)
         baseline_niche_donor = baseline_niche[donor_idx].astype(np.float32, copy=False)
+        environment_profile_index = None
 
         if x_niche is not None:
             cf_niche = np.asarray(x_niche, dtype=np.float32)
-            if cf_niche.ndim == 1:
-                cf_niche = np.repeat(cf_niche[None, :], donor_idx.size, axis=0)
-            if cf_niche.shape != (donor_idx.size, adata.n_vars):
-                raise ValueError(
-                    f"x_niche must have shape {(adata.n_vars,)} or {(donor_idx.size, adata.n_vars)}, "
-                    f"got {cf_niche.shape}."
-                )
+            if cartesian_niche:
+                if cf_niche.ndim == 1:
+                    cf_niche = cf_niche[None, :]
+                if cf_niche.ndim != 2 or cf_niche.shape[1] != adata.n_vars:
+                    raise ValueError(
+                        "With cartesian_niche=True, x_niche must have shape "
+                        f"(n_profiles, {adata.n_vars}); got {cf_niche.shape}."
+                    )
+                n_donors = donor_idx.size
+                n_profiles = cf_niche.shape[0]
+                x_donor = np.repeat(x_donor, n_profiles, axis=0)
+                baseline_niche_donor = np.repeat(baseline_niche_donor, n_profiles, axis=0)
+                cf_niche = np.tile(cf_niche, (n_donors, 1))
+                donor_idx = np.repeat(donor_idx, n_profiles)
+                environment_profile_index = np.tile(np.arange(n_profiles), n_donors)
+            else:
+                if cf_niche.ndim == 1:
+                    cf_niche = np.repeat(cf_niche[None, :], donor_idx.size, axis=0)
+                if cf_niche.shape != (donor_idx.size, adata.n_vars):
+                    raise ValueError(
+                        f"x_niche must have shape {(adata.n_vars,)} or "
+                        f"{(donor_idx.size, adata.n_vars)}, got {cf_niche.shape}."
+                    )
+        elif cartesian_niche:
+            raise ValueError("cartesian_niche=True requires explicit x_niche profiles.")
         else:
             if environment_mask is None:
                 raise ValueError("Provide either environment_mask or x_niche.")
@@ -1489,13 +1527,24 @@ class SPARC(UnsupervisedTrainingMixin, BaseModelClass):
             "donor_index": donor_idx,
             "target_genes": target_genes,
         }
+        if environment_profile_index is not None:
+            result["environment_profile_index"] = environment_profile_index
         if return_dataframe:
             obs_names = adata.obs_names[donor_idx]
-            result["baseline_df"] = pd.DataFrame(baseline, index=obs_names, columns=target_genes)
-            result["transplanted_df"] = pd.DataFrame(
-                transplanted, index=obs_names, columns=target_genes
+            if environment_profile_index is None:
+                output_index = obs_names
+            else:
+                output_index = pd.MultiIndex.from_arrays(
+                    [obs_names, environment_profile_index],
+                    names=["donor", "environment_profile"],
+                )
+            result["baseline_df"] = pd.DataFrame(
+                baseline, index=output_index, columns=target_genes
             )
-            result["delta_df"] = pd.DataFrame(delta, index=obs_names, columns=target_genes)
+            result["transplanted_df"] = pd.DataFrame(
+                transplanted, index=output_index, columns=target_genes
+            )
+            result["delta_df"] = pd.DataFrame(delta, index=output_index, columns=target_genes)
         return result
 
     predict_virtual_transplant = predict_microenvironment_transplant

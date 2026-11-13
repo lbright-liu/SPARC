@@ -5,6 +5,14 @@ type: software
 authors:
   - family-names: Liu
     given-names: Liliang
-version: 0.4.0
-date-released: 2026-07-21
+version: 0.5.0
+date-released: 2026-11-13
 repository-code: "https://github.com/lbright-liu/SPARC"
+preferred-citation:
+  type: conference-paper
+  title: "SPARC: Pathway-Constrained Spatial GRN Inference for Interpretable Counterfactual Perturbation Modeling"
+  authors:
+    - family-names: Liu
+      given-names: Liliang
+  conference:
+    name: "ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2027)"
